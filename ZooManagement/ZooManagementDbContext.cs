@@ -7,6 +7,8 @@ namespace ZooManagement
     {
         public ZooManagementDbContext(DbContextOptions<ZooManagementDbContext> options) : base(options) {}
         
-        public DbSet<Animal> Animals { get; set; }
+        public DbSet<AnimalModel> Animals { get; set; }
+        public DbSet<SpeciesModel> Species { get; set; }
+        public DbSet<ClassificationModel> Classifications { get; set; }
     }
 }
