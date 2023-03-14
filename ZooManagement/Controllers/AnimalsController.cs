@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using ZooManagement;
 using ZooManagement.Models.Database;
+using ZooManagement.Models.Response;
+using ZooManagement.Repositories;
 
 
 namespace ZooManagement.Controllers;
@@ -18,30 +20,37 @@ public class AnimalsController : ControllerBase
     // };
 
     private readonly ILogger<AnimalsController> _logger;
+    private readonly IAnimalRepo _animalRepo;
 
-    public AnimalsController(ILogger<AnimalsController> logger)
+    public AnimalsController(ILogger<AnimalsController> logger, IAnimalRepo animalRepo)
     {
         _logger = logger;
+        _animalRepo = animalRepo;
     }
 
-    ZooManagementDbContext context = new ZooManagementDbContext();
+    //ZooManagementDbContext context = new ZooManagementDbContext();
+
+    [HttpGet("time")]
+    public DateTime Get()
+    {
+        var data = DateTime.Now;
+        return data;
+    }
 
     //endpoint1: to get the detail of an animal;
     [HttpGet]
     public  ActionResult<AnimalModel> GetAnimalInfo(int id)
     {
-        return context.Animals.FirstOrDefault(i => i.Id == id);
+        var animalInfo = _animalRepo.GetAnimalInfo(id);
+        return animalInfo;
     }
 
     //endpoint2: to add an animal;
     [HttpPost]
-    public ActionResult<AnimalModel> AddAnimal(AddAnimalModel animal)
+    public ActionResult<AnimalResponseModel> AddAnimal(AddAnimalModel animal)
     {
-        AnimalModel newAnimal = new AnimalModel (animal.SpeciesId,animal.Name,animal.Sex,animal.DateOfBirth,animal.DateOfAcquirement);
-
-        context.Animals.Add(newAnimal);
-        context.SaveChanges();
-        return newAnimal;
+        AnimalModel newAnimal = _animalRepo.AddAnimal(animal);
+        return new AnimalResponseModel(newAnimal);
     }
 
     //endpoint3: to get a list of all species of animal;

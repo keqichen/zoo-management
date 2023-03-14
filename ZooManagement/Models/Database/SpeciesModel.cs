@@ -11,4 +11,11 @@ public class SpeciesModel
     public int ClassificationId{get;set;}
     public ClassificationModel Classfication{get;set;}
     public List<AnimalModel> AnimalList {get;set;} = new List<AnimalModel>();
+
+    public SpeciesModel (string name,int classificationId)
+    {
+       
+        Name=name;
+        ClassificationId=classificationId;
+    }
 }
