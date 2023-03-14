@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using ZooManagement.Models.Database;
+using ZooManagement.Models.Request;
 using ZooManagement;
 
 namespace ZooManagement.Repositories
@@ -12,6 +13,8 @@ namespace ZooManagement.Repositories
         AnimalModel GetAnimalInfo(int id);
         AnimalModel AddAnimal(AddAnimalModel animal);
         List<SpeciesModel> GetSpeciesList();
+        List<AnimalModel> GetAnimalList();
+         int Count();
     }
 
     public class AnimalRepo : IAnimalRepo
@@ -44,7 +47,7 @@ namespace ZooManagement.Repositories
         //     return newSpecies;
         // }
 
-        
+
         public AnimalModel AddAnimal(AddAnimalModel animal)
         {
             // check whether the species id/classfication id exists;
@@ -63,6 +66,27 @@ namespace ZooManagement.Repositories
         {
             return _context.Species.ToList();
         }
+
+        public List<AnimalModel> GetAnimalList()
+        {
+            return _context.Animals.ToList();
+        }
+
+        public IEnumerable<AnimalModel> Search(SearchRequest search)
+        {
+            return _context.Animals
+                .OrderByDescending(p => p.Id)
+                //.Where(p => search.PostedBy == null || p.UserId == search.PostedBy)
+                .Skip((search.Page - 1) * search.PageSize)
+                .Take(search.PageSize);
+        }
+
+         public int Count()
+        {
+            return _context.Animals
+                .Count();
+        }
+
 
     }
 }

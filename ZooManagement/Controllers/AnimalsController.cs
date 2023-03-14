@@ -5,6 +5,7 @@ using System.Linq;
 using ZooManagement;
 using ZooManagement.Models.Database;
 using ZooManagement.Models.Response;
+using ZooManagement.Models.Request;
 using ZooManagement.Repositories;
 
 
@@ -14,11 +15,6 @@ namespace ZooManagement.Controllers;
 [Route("[controller]")]
 public class AnimalsController : ControllerBase
 {
-    // private static readonly string[] Summaries = new[]
-    // {
-    //     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    // };
-
     private readonly ILogger<AnimalsController> _logger;
     private readonly IAnimalRepo _animalRepo;
 
@@ -27,8 +23,6 @@ public class AnimalsController : ControllerBase
         _logger = logger;
         _animalRepo = animalRepo;
     }
-
-    //ZooManagementDbContext context = new ZooManagementDbContext();
 
     [HttpGet("time")]
     public DateTime Get()
@@ -61,20 +55,14 @@ public class AnimalsController : ControllerBase
         return speciesList;
     }
 
-
-
-
-
-    
-    // [HttpGet(Name = "GetWeatherForecast")]
-    // public IEnumerable<WeatherForecast> Get()
-    // {
-    //     return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-    //     {
-    //         Date = DateTime.Now.AddDays(index),
-    //         TemperatureC = Random.Shared.Next(-20, 55),
-    //         Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-    //     })
-    //     .ToArray();
-    // }
+    //endpoint4: search;
+    [HttpGet("")]
+    public ActionResult<SearchResponseModel>Search([FromQuery] SearchRequest searchRequest)
+    {
+        //var pageNumber = _animalRepo.Search(searchRequest.Page);
+        //var pageSize = _animalRepo.Search(searchRequest.PageSize);
+        var animals = _animalRepo.GetAnimalList();
+        var animalCount=_animalRepo.Count();
+        return SearchResponseModel.Create(searchRequest, animals, animalCount);
+    }
 }
