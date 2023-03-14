@@ -8,10 +8,10 @@ public class AnimalModel
     public SpeciesModel Species {get;set;}
     public string Name {get;set;}
     public string Sex {get;set;}
-    public Nullable<DateTime> DateOfBirth {get;set;}
-    public Nullable<DateTime> DateOfAcquirement {get;set;}
+    public DateTime DateOfBirth {get;set;}
+    public DateTime DateOfAcquirement {get;set;}
 
-    public AnimalModel (int speciesId,string name, string sex, Nullable<DateTime> dateOfBirth, Nullable<DateTime> dateOfAcquirement)
+    public AnimalModel (int speciesId,string name, string sex, DateTime dateOfBirth, DateTime dateOfAcquirement)
     {
         SpeciesId=speciesId; 
         Name=name;

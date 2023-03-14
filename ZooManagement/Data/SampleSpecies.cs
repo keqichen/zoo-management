@@ -6,48 +6,25 @@ using System.Collections;
 
 namespace ZooManagement.Data
 {
-    public static class SampleAnimals
+    public static class SampleSpecies
     {
-        public const int NumberOfAnimals = 100;
-        private static readonly List<string> Names = new List<string>
+        //public const int NumberOfAnimals = 100;
+        public static List<SpeciesModel> SpeciesListGenerator()
         {
-            "Alice",
-            "Bob",
-            "Oliver",
-            "Jane",
-            "Tom",
-            "Mandy",
-            "James",
-            "Betty",
-            "Henry",
-            "Janet"
-        };
-        public static string GetName(int index)
-        {
-            return Names[index];
-        }
-        private static AnimalModel CreateRandomAnimal(int index)
-        {Random random=new Random();
-            //var passwordSalt = SaltGenerator.GetSalt();
-            return new AnimalModel 
-            (
-                random.Next(1,11),
-                GetName(random.Next(0,10)),
-                "female",
-                DateTime.Now,
-                DateTime.Now
-            );
-        }
-        static List<AnimalModel> sampleAnimalList=new List<AnimalModel>();
-        public static List<AnimalModel> AnimalListGenerator()
-        {
-            for(int i=0;i<NumberOfAnimals;i++)
+            List<SpeciesModel> sampleSpecies = new List<SpeciesModel>
             {
-                var randomAnimal=CreateRandomAnimal(i);
-                sampleAnimalList.Add(randomAnimal);
-            }
-
-            return sampleAnimalList;
+                new SpeciesModel("Tiger",1),
+                new SpeciesModel("Lion",1),
+                new SpeciesModel("Snail",3),
+                new SpeciesModel("Squid",3),
+                new SpeciesModel("Lizard",2),
+                new SpeciesModel("Spider",6),
+                new SpeciesModel("Eagle",5),
+                new SpeciesModel("Parrot",5),
+                new SpeciesModel("Clownfish",4),
+                new SpeciesModel("Shark",4)
+            };
+            return sampleSpecies;
         }
         
     }

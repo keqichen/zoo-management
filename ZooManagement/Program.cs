@@ -59,6 +59,14 @@ static void CreateDbIfNotExists(IHost host)
 
     if (!context.Animals.Any())
     {
+        var classifications = SampleClassifications.ClassificationsListGenerator();
+        context.Classifications.AddRange(classifications);
+        context.SaveChanges();
+
+        var species = SampleSpecies.SpeciesListGenerator();
+        context.Species.AddRange(species);
+        context.SaveChanges();
+
         var animals = SampleAnimals.AnimalListGenerator();
         context.Animals.AddRange(animals);
         context.SaveChanges();

@@ -8,43 +8,20 @@ namespace ZooManagement.Data
 {
     public static class SampleClassifications
     {
-        public const int NumberOfClassfications = 6;
-        private static readonly List<ClassificationModel> Classfications = new List<string>
+        //public const int NumberOfClassfications = 6;
+        public static List<ClassificationModel> ClassificationsListGenerator()
         {
-            "Mammal",
-            "Reptile",
-            "Invertebrate",
-            "Fish",
-            "Bird",
-            "Insect",
-        };
-        public static string GetClassfications(int index)
-        {
-            return Names[index];
-        }
-        private static AnimalModel CreateRandomAnimal(int index)
-        {Random random=new Random();
-            //var passwordSalt = SaltGenerator.GetSalt();
-            return new AnimalModel 
-            (
-                random.Next(1,11),
-                GetName(random.Next(0,10)),
-                "female",
-                DateTime.Now,
-                DateTime.Now
-            );
-        }
-        static List<AnimalModel> sampleAnimalList=new List<AnimalModel>();
-        public static List<AnimalModel> AnimalListGenerator()
-        {
-            for(int i=0;i<NumberOfAnimals;i++)
+            List<ClassificationModel> sampleClassifications = new List<ClassificationModel>
             {
-                var randomAnimal=CreateRandomAnimal(i);
-                sampleAnimalList.Add(randomAnimal);
-            }
+                new ClassificationModel("Mammal"),
+                new ClassificationModel("Reptile"),
+                new ClassificationModel("Invertebrate"),
+                new ClassificationModel("Fish"),
+                new ClassificationModel("Bird"),
+                new ClassificationModel("Insect")
+            };
 
-            return sampleAnimalList;
+            return sampleClassifications;
         }
-        
     }
 }

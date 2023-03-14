@@ -38,7 +38,7 @@ public class AnimalsController : ControllerBase
     }
 
     //endpoint1: to get the detail of an animal;
-    [HttpGet]
+    [HttpGet("animal")]
     public  ActionResult<AnimalModel> GetAnimalInfo(int id)
     {
         var animalInfo = _animalRepo.GetAnimalInfo(id);
@@ -54,7 +54,12 @@ public class AnimalsController : ControllerBase
     }
 
     //endpoint3: to get a list of all species of animal;
-
+    [HttpGet("species")]
+    public ActionResult<List<SpeciesModel>> GetSpeciesList()
+    {
+        var speciesList = _animalRepo.GetSpeciesList();
+        return speciesList;
+    }
 
 
 

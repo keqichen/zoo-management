@@ -11,6 +11,7 @@ namespace ZooManagement.Repositories
     {
         AnimalModel GetAnimalInfo(int id);
         AnimalModel AddAnimal(AddAnimalModel animal);
+        List<SpeciesModel> GetSpeciesList();
     }
 
     public class AnimalRepo : IAnimalRepo
@@ -56,6 +57,11 @@ namespace ZooManagement.Repositories
             _context.Animals.Add(newAnimal);
             _context.SaveChanges();
             return newAnimal;
+        }
+
+        public List<SpeciesModel> GetSpeciesList()
+        {
+            return _context.Species.ToList();
         }
 
     }
