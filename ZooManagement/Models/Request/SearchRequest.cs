@@ -7,16 +7,58 @@ namespace ZooManagement.Models.Request
         public virtual string Filters => "";
     }
     
+    public class SpeciesSearchRequest : SearchRequest
+    {
+        public int? SpeciesName { get; set; }
+        public override string Filters => SpeciesName == null ? "" : $"&speciesName={SpeciesName}";
+    }
+
+    public class ClassificationSearchRequest : SearchRequest
+    {
+        public int? ClassificationName { get; set; }
+        public override string Filters => ClassificationName == null ? "" : $"&classificationName ={ClassificationName}";
+    }
+
     public class AnimalSearchRequest : SearchRequest
     {
-        private string _search;
-        
-        public string Search
+        public string? Name { get; set; }
+        public int? Age { get; set; }
+        public string? Sex { get; set; }
+        public string? DateOfBirth { get; set; }
+        public string? DateOfAcquirement { get; set; }
+        public override string Filters
         {
-            get => _search?.ToLower();
-            set => _search = value;
-        }
+            get
+            {
+                var filters = "";
 
-        public override string Filters => Search == null ? "" : $"&search={Search}";
+                if (Name != null)
+                {
+                    filters += $"&name={Name}";
+                }
+                
+                if (Age != null)
+                {
+                    filters += $"&age={Age}";
+                }
+                
+                if (Sex != null)
+                {
+                    filters += $"&sex={Sex}";
+                }
+
+                if (DateOfBirth != null)
+                {
+                    filters += $"&dateOfBirth={DateOfBirth}";
+                }
+
+                if (DateOfAcquirement != null)
+                {
+                    filters += $"&dateOfAcquirement={DateOfAcquirement}";
+                }
+                
+                return filters;
+            }
+        }
     }
 }
