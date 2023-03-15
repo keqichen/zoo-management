@@ -14,7 +14,8 @@ namespace ZooManagement.Repositories
         AnimalModel AddAnimal(AddAnimalModel animal);
         List<SpeciesModel> GetSpeciesList();
         List<AnimalModel> GetAnimalList();
-         int Count();
+        IEnumerable<AnimalModel> Search(SearchRequest search);
+        int Count();
     }
 
     public class AnimalRepo : IAnimalRepo
@@ -75,13 +76,13 @@ namespace ZooManagement.Repositories
         public IEnumerable<AnimalModel> Search(SearchRequest search)
         {
             return _context.Animals
-                .OrderByDescending(p => p.Id)
+                .OrderBy(p => p.Id)
                 //.Where(p => search.PostedBy == null || p.UserId == search.PostedBy)
                 .Skip((search.Page - 1) * search.PageSize)
                 .Take(search.PageSize);
         }
 
-         public int Count()
+        public int Count()
         {
             return _context.Animals
                 .Count();

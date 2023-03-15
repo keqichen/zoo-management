@@ -59,10 +59,13 @@ public class AnimalsController : ControllerBase
     [HttpGet("")]
     public ActionResult<SearchResponseModel>Search([FromQuery] SearchRequest searchRequest)
     {
-        //var pageNumber = _animalRepo.Search(searchRequest.Page);
-        //var pageSize = _animalRepo.Search(searchRequest.PageSize);
-        var animals = _animalRepo.GetAnimalList();
+        // var pageNumber = _animalRepo.Search(searchRequest.Page);
+        // var pageSize = _animalRepo.Search(searchRequest.PageSize);
+
+        var animalList=_animalRepo.Search(searchRequest);
+        // var animals = _animalRepo.GetAnimalList();
         var animalCount=_animalRepo.Count();
-        return SearchResponseModel.Create(searchRequest, animals, animalCount);
+
+        return SearchResponseModel.Create(searchRequest, animalList, animalCount);
     }
 }

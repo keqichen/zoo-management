@@ -9,7 +9,6 @@ namespace ZooManagement.Models.Response
     {
         private readonly string _path;
         private readonly string _filters;
-        
         public IEnumerable<AnimalModel> Items { get; }
         public int TotalNumberOfItems { get; }
         public int Page { get; }
@@ -36,7 +35,8 @@ namespace ZooManagement.Models.Response
         
         public static SearchResponseModel Create(SearchRequest search, IEnumerable<AnimalModel> animals, int totalNumberOfItems)
         {
-            var animalModels = animals.Select(animal => new AnimalModel(animal.SpeciesId,animal.Name,animal.Sex,animal.DateOfBirth,animal.DateOfAcquirement));
+            //var animalModels = animals.Select(animal => new AnimalModel(animal.SpeciesId,animal.Name,animal.Sex,animal.DateOfBirth,animal.DateOfAcquirement));
+            var animalModels = animals.ToList();
             return new SearchResponseModel(search, animalModels, totalNumberOfItems, "Animals");
         }
     }
