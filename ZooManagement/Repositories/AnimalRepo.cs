@@ -15,7 +15,7 @@ namespace ZooManagement.Repositories
         List<SpeciesModel> GetSpeciesList();
         List<AnimalModel> GetAnimalList();
         IEnumerable<AnimalModel> Search(SearchRequest search);
-        int Count();
+        int Count(List<AnimalModel> animals);
     }
 
     public class AnimalRepo : IAnimalRepo
@@ -73,18 +73,47 @@ namespace ZooManagement.Repositories
             return _context.Animals.ToList();
         }
 
+//one search method;
         public IEnumerable<AnimalModel> Search(SearchRequest search)
         {
+            
             return _context.Animals
+                //search classification;
+                .Where(p => search.ClassificationName == null ||
+                                (
+                                    p.Species.Classification.Name.ToLower().Contains(search.ClassificationName) 
+                                    
+                                ))
+                //search species;
+                .Where(p => search.SpeciesName == null ||
+                                    (
+                                        p.Species.Name.ToLower().Contains(search.SpeciesName) 
+                                    ))
+                //search animals;
+                .Where(p => search.AnimalName == null ||
+                                    (
+                                        p.Name.ToLower().Contains(search.AnimalName) 
+                                    ))
+                .Where(p => search.Age == null ||
+                                    (
+                                        search.Age==Math.Ceiling((double)DateTime.Now.Subtract(p.DateOfBirth).Days/365)
+                                    ))
+                .Where(p => search.Sex == null ||
+                                    (
+                                        search.Sex==p.Sex
+                                    ))
+                .Where(p => search.DateOfAcquirement == null ||
+                                    (
+                                        DateTime.Parse(search.DateOfAcquirement)==p.DateOfAcquirement
+                                    ))
                 .OrderBy(p => p.Id)
-                //.Where(p => search.PostedBy == null || p.UserId == search.PostedBy)
                 .Skip((search.Page - 1) * search.PageSize)
                 .Take(search.PageSize);
         }
 
-        public int Count()
+        public int Count(List<AnimalModel> animals)
         {
-            return _context.Animals
+            return animals
                 .Count();
         }
 

@@ -56,11 +56,15 @@ public class AnimalsController : ControllerBase
     }
 
     //endpoint4: search;
+    //Do we need different end points for different search?
+    //Can we combine them?
     [HttpGet("")]
     public ActionResult<SearchResponseModel>Search([FromQuery] SearchRequest searchRequest)
     {
-        var animalList=_animalRepo.Search(searchRequest);
-        var animalCount=_animalRepo.Count();
+        var animalList=_animalRepo.Search(searchRequest).ToList();
+
+        //var animalSpecies = _animalRepo.SearchSpecies(searchRequest);
+        var animalCount=_animalRepo.Count(animalList);
         return SearchResponseModel.Create(searchRequest, animalList, animalCount);
     }
 }
