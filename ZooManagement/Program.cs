@@ -9,6 +9,8 @@ using Microsoft.OpenApi.Models;
 using ZooManagement;
 using ZooManagement.Repositories;
 using ZooManagement.Data;
+using System.Text.Json.Serialization;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IAnimalRepo, AnimalRepo>();
+
+//ignore cycles;
+builder.Services.AddControllers().AddJsonOptions(options => 
+{ 
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.WriteIndented = true;
+});
 
 builder.Services.AddDbContext<ZooManagementDbContext>(options =>
 {

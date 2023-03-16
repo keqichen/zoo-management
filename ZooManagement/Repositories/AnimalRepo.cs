@@ -73,6 +73,13 @@ namespace ZooManagement.Repositories
             return _context.Animals.ToList();
         }
 
+        // EF can't recognise your own methods;
+        // public static int AgeConverter (DateTime dateOfBirth)
+        // {
+        //     int age = DateTime.Now.Year-dateOfBirth.Year;
+        //     return age+1;
+        // }
+
 //one search method;
         public IEnumerable<AnimalModel> Search(SearchRequest search)
         {
@@ -96,8 +103,9 @@ namespace ZooManagement.Repositories
                                     ))
                 .Where(p => search.Age == null ||
                                     (
-                                        search.Age==Math.Ceiling((double)DateTime.Now.Subtract(p.DateOfBirth).Days/365)
+                                        search.Age==(DateTime.Now.Year-p.DateOfBirth.Year)+1
                                     ))
+            
                 .Where(p => search.Sex == null ||
                                     (
                                         search.Sex==p.Sex
@@ -106,6 +114,11 @@ namespace ZooManagement.Repositories
                                     (
                                         DateTime.Parse(search.DateOfAcquirement)==p.DateOfAcquirement
                                     ))
+                
+                // .Include(p=>p.Species)
+                // .Include(p=>p.Species.Select(z=>z.Name))
+                // .Select(x => new { Department = x, UniversityName = "ABC University" }) 
+                //     .ThenInclude(s=>s.Classification)
                 .OrderBy(p => p.Id)
                 .Skip((search.Page - 1) * search.PageSize)
                 .Take(search.PageSize);
@@ -116,6 +129,5 @@ namespace ZooManagement.Repositories
             return animals
                 .Count();
         }
-
     }
 }
