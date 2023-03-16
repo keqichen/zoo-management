@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using ZooManagement.Models.Database;
 using ZooManagement.Models.Request;
+using ZooManagement.Models.Response;
 using ZooManagement;
 
 namespace ZooManagement.Repositories
@@ -14,8 +15,8 @@ namespace ZooManagement.Repositories
         AnimalModel AddAnimal(AddAnimalModel animal);
         List<SpeciesModel> GetSpeciesList();
         List<AnimalModel> GetAnimalList();
-        IEnumerable<AnimalModel> Search(SearchRequest search);
-        int Count(List<AnimalModel> animals);
+        IEnumerable<AnimalResponseModel> Search(SearchRequest search);
+        int Count(List<AnimalResponseModel> animals);
     }
 
     public class AnimalRepo : IAnimalRepo
@@ -81,7 +82,7 @@ namespace ZooManagement.Repositories
         // }
 
 //one search method;
-        public IEnumerable<AnimalModel> Search(SearchRequest search)
+        public IEnumerable<AnimalResponseModel> Search(SearchRequest search)
         {
             
             return _context.Animals
@@ -115,16 +116,16 @@ namespace ZooManagement.Repositories
                                         DateTime.Parse(search.DateOfAcquirement)==p.DateOfAcquirement
                                     ))
                 
-                // .Include(p=>p.Species)
-                // .Include(p=>p.Species.Select(z=>z.Name))
-                // .Select(x => new { Department = x, UniversityName = "ABC University" }) 
-                //     .ThenInclude(s=>s.Classification)
+                .Include(p=>p.Species)
+                    .ThenInclude(s=>s.Classification)
+                .Select(x => new AnimalResponseModel (x)) 
+                .AsEnumerable()
                 .OrderBy(p => p.Id)
                 .Skip((search.Page - 1) * search.PageSize)
                 .Take(search.PageSize);
         }
 
-        public int Count(List<AnimalModel> animals)
+        public int Count(List<AnimalResponseModel> animals)
         {
             return animals
                 .Count();

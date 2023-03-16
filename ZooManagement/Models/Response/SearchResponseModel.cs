@@ -9,7 +9,7 @@ namespace ZooManagement.Models.Response
     {
         private readonly string _path;
       
-        public IEnumerable<AnimalModel> Items { get; }
+        public IEnumerable<AnimalResponseModel> Items { get; }
         public int TotalNumberOfItems { get; }
         public int Page { get; }
         public int PageSize { get; }
@@ -18,7 +18,7 @@ namespace ZooManagement.Models.Response
 
         public string PreviousPage => Page <= 1 ? null : $"/{_path}?page={Page - 1}&pageNumber={PageSize}";
 
-        public SearchResponseModel(SearchRequest search, IEnumerable<AnimalModel> items, int totalNumberOfItems, string path)
+        public SearchResponseModel(SearchRequest search, IEnumerable<AnimalResponseModel> items, int totalNumberOfItems, string path)
         {
             Items = items;
             TotalNumberOfItems = totalNumberOfItems;
@@ -32,7 +32,7 @@ namespace ZooManagement.Models.Response
             return Page * PageSize < TotalNumberOfItems;
         }
         
-        public static SearchResponseModel Create(SearchRequest search, IEnumerable<AnimalModel> animals, int totalNumberOfItems)
+        public static SearchResponseModel Create(SearchRequest search, IEnumerable<AnimalResponseModel> animals, int totalNumberOfItems)
         {
             //var animalModels = animals.Select(animal => new AnimalModel(animal.SpeciesId,animal.Name,animal.Sex,animal.DateOfBirth,animal.DateOfAcquirement));
             var animalModels = animals.ToList();
