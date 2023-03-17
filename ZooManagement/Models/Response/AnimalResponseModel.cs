@@ -14,6 +14,7 @@ namespace ZooManagement.Models.Response
         public int Id =>_animal.Id;
         //public int SpeciesId =>_animal.SpeciesId;
         public string SpeciesName => _animal.Species.Name;
+        public string EnclosureName=>_animal.Enclosure.Name;
         public string ClassificationName => _animal.Species.Classification.Name;
         public string AnimalName =>_animal.Name;
         public string Sex =>_animal.Sex;

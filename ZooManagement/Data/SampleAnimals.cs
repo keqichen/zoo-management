@@ -26,15 +26,21 @@ namespace ZooManagement.Data
         {
             return Names[index];
         }
-        private static AnimalModel CreateRandomAnimal(int index)
+        // How to allocate a enclosure for a newly created animal
+        AnimalModel CreateRandomAnimal(int index)
         {Random random=new Random();
             //var passwordSalt = SaltGenerator.GetSalt();
             return new AnimalModel 
-            (
+            (   //SpeciesId
                 random.Next(1,11),
+                //EnclosureId
+
+                //Name -- Animal name
                 GetName(random.Next(0,10)),
                 "female",
+                //Date of Birth
                 DateTime.Now,
+                //Date of Acquirement
                 DateTime.Now
             );
         }

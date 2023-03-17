@@ -76,6 +76,10 @@ static void CreateDbIfNotExists(IHost host)
         context.Species.AddRange(species);
         context.SaveChanges();
 
+        var enclosures=SampleEnclosures.EnclosureListGenerator();
+        context.Enclosure.AddRange(enclosures);
+        context.SaveChanges();
+
         var animals = SampleAnimals.AnimalListGenerator();
         context.Animals.AddRange(animals);
         context.SaveChanges();

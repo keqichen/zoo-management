@@ -6,6 +6,10 @@ public class AnimalModel
     [ForeignKey("Species")]
     public int SpeciesId {get;set;}
     public SpeciesModel Species {get;set;}
+
+    [ForeignKey("Enclosure")]
+    public int EnclosureId{get;set;}
+    public EnclosureModel Enclosure{get;set;}
     public string Name {get;set;}
     public string Sex {get;set;}
     public DateTime DateOfBirth {get;set;}
