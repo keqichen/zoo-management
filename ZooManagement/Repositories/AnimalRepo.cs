@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using ZooManagement.Models.Database;
 using ZooManagement.Models.Request;
+using ZooManagement.Models.Response;
 using ZooManagement;
 
 namespace ZooManagement.Repositories
@@ -14,8 +15,8 @@ namespace ZooManagement.Repositories
         AnimalModel AddAnimal(AddAnimalModel animal);
         List<SpeciesModel> GetSpeciesList();
         List<AnimalModel> GetAnimalList();
-        IEnumerable<AnimalModel> Search(SearchRequest search);
-        int Count(List<AnimalModel> animals);
+        IEnumerable<AnimalResponseModel> Search(SearchRequest search);
+        int Count(List<AnimalResponseModel> animals);
     }
 
     public class AnimalRepo : IAnimalRepo
@@ -73,8 +74,15 @@ namespace ZooManagement.Repositories
             return _context.Animals.ToList();
         }
 
+        // EF can't recognise your own methods;
+        // public static int AgeConverter (DateTime dateOfBirth)
+        // {
+        //     int age = DateTime.Now.Year-dateOfBirth.Year;
+        //     return age+1;
+        // }
+
 //one search method;
-        public IEnumerable<AnimalModel> Search(SearchRequest search)
+        public IEnumerable<AnimalResponseModel> Search(SearchRequest search)
         {
             
             return _context.Animals
@@ -96,8 +104,9 @@ namespace ZooManagement.Repositories
                                     ))
                 .Where(p => search.Age == null ||
                                     (
-                                        search.Age==Math.Ceiling((double)DateTime.Now.Subtract(p.DateOfBirth).Days/365)
+                                        search.Age==(DateTime.Now.Year-p.DateOfBirth.Year)+1
                                     ))
+            
                 .Where(p => search.Sex == null ||
                                     (
                                         search.Sex==p.Sex
@@ -106,16 +115,20 @@ namespace ZooManagement.Repositories
                                     (
                                         DateTime.Parse(search.DateOfAcquirement)==p.DateOfAcquirement
                                     ))
+                
+                .Include(p=>p.Species)
+                    .ThenInclude(s=>s.Classification)
+                .Select(x => new AnimalResponseModel (x)) 
+                .AsEnumerable()
                 .OrderBy(p => p.Id)
                 .Skip((search.Page - 1) * search.PageSize)
                 .Take(search.PageSize);
         }
 
-        public int Count(List<AnimalModel> animals)
+        public int Count(List<AnimalResponseModel> animals)
         {
             return animals
                 .Count();
         }
-
     }
 }
